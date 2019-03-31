@@ -75,6 +75,8 @@ class Window(QWidget):
         self.btnQUIT.clicked.connect(self.quit)
 
     #button功能函数
+    
+    #获取每日天文图片
     def APOD(self):
         path,imstr,date,explanation=btnfunc.Get_APOD()
         if path:
@@ -86,7 +88,7 @@ class Window(QWidget):
             self.label2.setText('非图片格式，请访问： %s' %imstr)
 
 
-
+    #获取小行星信息
     def Neo(self):
         i,ok = QInputDialog.getInt(self,'查找小行星','id：',0,0,9999999,1)
         if ok:
@@ -99,16 +101,18 @@ class Window(QWidget):
                     self.text.append("接近日期: %s  轨道天体: %s"%(d['date'],d["orbiting_body"]) )
             else:
                 self.label2.setText("此id不存在")
+                
+    #获取火星探测器拍到的图片
     def Mars(self):
         rover = ('curiosity','opportunity','spirit')
         item,ok=QInputDialog.getItem(self,"Mars Rover","请选择探测器：",rover,0,False)
         if ok:
             btnfunc.Grt_Mars_Pic(item)
-
+    #退出程序
     def quit(self):
         sys.exit()
 
-
+#运行程序
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

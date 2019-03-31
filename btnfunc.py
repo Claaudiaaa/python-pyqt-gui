@@ -8,6 +8,7 @@ import json
 import cv2
 import btnfunc
 
+#获取apikey
 def Get_key():
     f=open('key.txt','r')
     apikey=f.read()
@@ -32,6 +33,7 @@ def Get_APOD():
         date=result['date']
         explanation=result['explanation']
         return path,imstr,date,explanation
+    #资源类型为视频或其他
     else:
         return None,None,None,None
 
@@ -44,7 +46,7 @@ def Get_NeoInfo(id_num):
     if resp.status_code == 200:
         result = resp.json()
         L=[]
-        # 选取指定元素
+        # 选取指定元素 -接近日期和绕行天体
         for item in result["close_approach_data"]:
             d={}
             d['date']=item["close_approach_date"]
@@ -72,6 +74,7 @@ def Grt_Mars_Pic(probe):
                 f.write(img)
                 pic_id += 1
                 i += 1
+        #打开子窗口
         newWindow = SecondWindow()
         newWindow.show()
         newWindow.exec_()
@@ -101,6 +104,7 @@ class SecondWindow(QDialog):
         self.buttonNext.clicked.connect(self.Next)
 
     #button功能函数
+    #前一张图片
     def Previous(self):
         if self.num==0:
             # 消息框
@@ -109,7 +113,8 @@ class SecondWindow(QDialog):
         else:
             self.num=self.num-1
             self.label_pic.setPixmap(QPixmap(str(self.num) + '.jpg').scaled(500,500,aspectRatioMode=1))
-
+    
+    #后一张图片
     def Next(self):
         if self.num==5:
             reply = QMessageBox.information(self, "提示", '没有下一张图片', QMessageBox.Yes, QMessageBox.No)
